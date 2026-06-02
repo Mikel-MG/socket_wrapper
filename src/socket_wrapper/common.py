@@ -14,23 +14,18 @@ def run_dssp(pdb_file: Path, i_worker: int = 0, bin_dssp: str = "mkdssp") -> Pat
     return path_dssp_output
 
 
-def run_socket(pdb_file: Path, threshold: float = 7.0, i_worker: int = 0):
+def run_socket(
+    pdb_file: Path,
+    i_worker: int = 0,
+    bin_socket: str = "./data/SOCKET/socket2_linux",
+    threshold: float = 7.0,
+):
     # run DSSP
     name_dssp_file = run_dssp(pdb_file, i_worker)
 
-    # Fix the output to be compatible with Socket
-    bad_string = "            CHAIN"
-    with open(name_dssp_file, "r") as inpt:
-        data = inpt.read()
-    with open(name_dssp_file, "w") as output:
-        fixed_data = data.replace(bad_string, "")
-        output.write(fixed_data)
-
     # run socket
     path_socket_file = Path(f"temp_{i_worker}.socket")
-    socket_command = (
-        f"socket -f {pdb_file} -s {name_dssp_file} -c {threshold} > {path_socket_file}"
-    )
+    socket_command = f"{bin_socket} -f {pdb_file} -s {name_dssp_file} -c {threshold} > {path_socket_file}"
     subprocess.call(socket_command, shell=True)
 
     # parse socket results
@@ -39,3 +34,4 @@ def run_socket(pdb_file: Path, threshold: float = 7.0, i_worker: int = 0):
 
     # TODO: Finish parsing!
     list_resi_knobs = [data[6].split(":")[0] for data in list_knobs]
+    print(list_resi_knobs)

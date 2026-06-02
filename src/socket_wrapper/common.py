@@ -21,7 +21,9 @@ def run_socket(
     i_worker: int = 0,
     bin_socket: str = "./data/SOCKET/socket2_linux",
     threshold: float = 7.0,
-):
+) -> dict:
+    dict_socket = {}
+
     # run DSSP
     name_dssp_file = run_dssp(pdb_file, i_worker)
 
@@ -34,6 +36,24 @@ def run_socket(
     with open(path_socket_file) as inpt:
         list_knobs = [line.strip().split() for line in inpt if line.startswith("knob ")]
 
-    # TODO: Finish parsing!
-    list_resi_knobs = [data[6].split(":")[0] for data in list_knobs]
-    print(list_resi_knobs)
+    # (resi, chain) pairs
+    list_resi_knobs = [data[6].split(":") for data in list_knobs]
+    list_resi_knobs = [(chain, int(resi)) for resi, chain in list_resi_knobs]
+
+    dict_socket["knobs"] = agg_list_resi(list_resi_knobs)
+    print(dict_socket)
+    return dict_socket
+
+
+def agg_list_resi(list_resi: list) -> dict:
+    """
+    Take a list of (chain,resi) elements and aggregate into dict[chain] = [resi_list]
+    """
+    dict_bychain_resi = {}
+    for chain, resi in list_resi:
+        if chain not in dict_bychain_resi:
+            dict_bychain_resi[chain] = [resi]
+        else:
+            dict_bychain_resi[chain].append(resi)
+
+    return dict_bychain_resi

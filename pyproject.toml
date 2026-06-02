@@ -9,7 +9,7 @@ name = "socket_wrapper"
 version = "0.1.0"
 description = "Python wrapper for the Woolfson group’s SOCKET KIH detection tool"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 authors = [
     { name = "Mikel Martinez Goikoetxea", email = "mikel.martinez@tuebingen.mpg.de " }
 ]

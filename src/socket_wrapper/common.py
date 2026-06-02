@@ -1,13 +1,15 @@
 import subprocess
+import tempfile
 from pathlib import Path
 
 CACHE_DIR = Path("$HOME/.cache/libcifpp")
 COMPONENTS_FILE = CACHE_DIR / "components.cif"
+tmp_dir = Path(tempfile.gettempdir())
 
 
 def run_dssp(pdb_file: Path, i_worker: int = 0, bin_dssp: str = "mkdssp") -> Path:
     # run DSSP
-    path_dssp_output = Path(f"temp_{i_worker}.dssp")
+    path_dssp_output = tmp_dir / f"temp_{i_worker}.dssp"
     dssp_setup = f"export LIBCIFPP_DATA_DIR={CACHE_DIR}"
     dssp_command = f"{bin_dssp} {pdb_file} --output-format dssp > {path_dssp_output}"
     subprocess.call(dssp_setup + "&&" + dssp_command, shell=True)
@@ -24,7 +26,7 @@ def run_socket(
     name_dssp_file = run_dssp(pdb_file, i_worker)
 
     # run socket
-    path_socket_file = Path(f"temp_{i_worker}.socket")
+    path_socket_file = tmp_dir / f"temp_{i_worker}.socket"
     socket_command = f"{bin_socket} -f {pdb_file} -s {name_dssp_file} -c {threshold} > {path_socket_file}"
     subprocess.call(socket_command, shell=True)
 

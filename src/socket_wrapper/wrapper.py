@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from .common import run_dssp, run_socket
+from .common import fix_pdb, run_dssp, run_socket
 
 # infer location of SOCKET binary
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
@@ -29,8 +29,14 @@ class SocketCC:
         self,
         path_pdb: Path,
         i_worker: str = "0",
+        auto_fix_pdb: bool = False,
         delete_tempfiles: bool = True,
     ):
+        # fix PDB file
+        # TODO: Review, inconsistent API
+        if auto_fix_pdb is True:
+            path_pdb = fix_pdb(path_pdb, i_worker)
+
         # run DSSP and generate temporary file
         path_dssp_file = run_dssp(
             path_pdb, i_worker, bin_dssp=self.bin_dssp, env=self.env

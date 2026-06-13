@@ -2,8 +2,29 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+from .renumber import renumber_pdb
+
 # specify location of library and temporary files
 tmp_dir = Path(tempfile.gettempdir())
+
+
+def fix_pdb(
+    pdb_file: Path,
+    i_worker: str = "0",
+    debug: bool = False,
+) -> Path:
+    # delete HETATM records
+    path_fixed_output = tmp_dir / f"temp_fixed_{i_worker}.pdb"
+    subprocess.run(f"grep -v 'HETATM' {pdb_file}> {path_fixed_output}", shell=True)
+
+    # renumber chains and residue indices
+    renumber_pdb(
+        path_fixed_output,
+        path_fixed_output,
+        debug=debug,
+    )
+
+    return path_fixed_output
 
 
 def run_dssp(

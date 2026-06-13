@@ -33,9 +33,9 @@ class SocketCC:
         delete_tempfiles: bool = True,
     ):
         # fix PDB file
-        # TODO: Review, inconsistent API
         if auto_fix_pdb is True:
-            path_pdb = fix_pdb(path_pdb, i_worker)
+            temp_fixed_pdb = fix_pdb(path_pdb, i_worker)
+            path_pdb = temp_fixed_pdb
 
         # run DSSP and generate temporary file
         path_dssp_file = run_dssp(
@@ -51,5 +51,8 @@ class SocketCC:
         if delete_tempfiles is True:
             path_dssp_file.unlink()
             path_socket_file.unlink()
+
+            if auto_fix_pdb is True:
+                temp_fixed_pdb.unlink()
 
         return dict_socket

@@ -8,7 +8,7 @@ tmp_dir = Path(tempfile.gettempdir())
 
 def run_dssp(
     pdb_file: Path,
-    i_worker: int = 0,
+    i_worker: str = "0",
     bin_dssp: str = "mkdssp",
     env: None | dict = None,
 ) -> Path:
@@ -22,7 +22,7 @@ def run_dssp(
 def run_socket(
     pdb_file: Path,
     path_dssp_output: Path,
-    i_worker: int = 0,
+    i_worker: str = "0",
     bin_socket: str = "socket2",
     threshold: float = 7.0,
 ) -> tuple[dict, Path]:

@@ -25,7 +25,12 @@ class SocketCC:
         env["LIBCIFPP_DATA_DIR"] = str(CACHE_DIR)
         self.env = env
 
-    def detect_kih(self, path_pdb: Path, i_worker: int = 0):
+    def detect_kih(
+        self,
+        path_pdb: Path,
+        i_worker: str = "0",
+        delete_tempfiles: bool = True,
+    ):
         # run DSSP and generate temporary file
         path_dssp_file = run_dssp(
             path_pdb, i_worker, bin_dssp=self.bin_dssp, env=self.env
@@ -37,7 +42,8 @@ class SocketCC:
         )
 
         # optional: remove temporary files
-        path_dssp_file.unlink()
-        path_socket_file.unlink()
+        if delete_tempfiles is True:
+            path_dssp_file.unlink()
+            path_socket_file.unlink()
 
         return dict_socket

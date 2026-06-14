@@ -6,10 +6,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "socket_wrapper" 
-version = "0.1.0"
+version = "0.2.0"
 description = "Python wrapper for the Woolfson group’s SOCKET KIH detection tool"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
     { name = "Mikel Martinez Goikoetxea", email = "mikel.martinez@tuebingen.mpg.de " }
 ]
+
+[tool.setuptools.package-data]
+"socket_wrapper" = ["./data/SOCKET/socket2_linux",
+                    "./data/sample_PDBs/*.pdb"]

@@ -5,7 +5,7 @@ from urllib.request import urlretrieve
 from .common import fix_pdb, run_dssp, run_socket
 
 # infer location of SOCKET binary
-ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+ROOT_DIR = Path(__file__).resolve().parent
 path_default_socket = ROOT_DIR / "data/SOCKET/socket2_linux"
 
 CACHE_DIR = Path.home() / ".cache" / "libcifpp"

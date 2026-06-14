@@ -11,7 +11,7 @@ description = "Python wrapper for the Woolfson group’s SOCKET KIH detection to
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
-    { name = "Mikel Martinez Goikoetxea", email = "mikel.martinez@tuebingen.mpg.de " }
+    { name = "Mikel Martinez Goikoetxea", email = "mikel.martinez@tuebingen.mpg.de" }
 ]
 
 [tool.setuptools.package-data]
